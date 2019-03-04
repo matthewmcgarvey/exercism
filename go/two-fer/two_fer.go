@@ -1,11 +1,10 @@
 package twofer
 
+// ShareWith determines who to share with
+// defaults to "you"
 func ShareWith(name string) string {
-	var actual string
 	if len(name) == 0 {
-		actual = "you"
-	} else {
-		actual = name
+		name = "you"
 	}
-	return "One for " + actual + ", one for me."
+	return "One for " + name + ", one for me."
 }
