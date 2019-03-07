@@ -15,15 +15,15 @@ class Bob {
   }
 
   private function silence($input) {
-    return empty(preg_replace('/\s+/', '', $input));
+    return empty(trim(preg_replace('/\pZ+/u', '', $input)));
   }
 
   private function yelling($input) {
-    return $this->contains_letters($input) && $input == strtoupper($input);
+    return $this->containsLetters($input) && $input === mb_strtoupper($input);
   }
 
   private function questioning($input) {
-    return $this->endsWith(trim($input), "?");
+    return $this->endsWith(trim($input), '?');
   }
 
   private function forcefullQuestioning($input) {
@@ -31,10 +31,10 @@ class Bob {
   }
 
   private function endsWith($input, $expected) {
-    return substr($input, -strlen($expected)) == $expected;
+    return mb_substr($input, -mb_strlen($expected)) === $expected;
   }
 
-  function contains_letters($input) {
+  function containsLetters($input) {
     return preg_match( '/[a-zA-Z]/', $input );
 }
 }
