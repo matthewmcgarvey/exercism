@@ -1,11 +1,15 @@
 module Raindrops
+  FACTORS_TO_RAINDROPS = {
+    3 => "Pling",
+    5 => "Plang",
+    7 => "Plong",
+  }
 
   def self.drops(num : Int32) : String
-    String.build do |str|
-      str << "Pling" if num.divisible_by?(3)
-      str << "Plang" if num.divisible_by?(5)
-      str << "Plong" if num.divisible_by?(7)
-      str << num.to_s if str.empty?
-    end
+    FACTORS_TO_RAINDROPS
+      .select { |factor, _| num.divisible_by?(factor) }
+      .map { |_, sound| sound }
+      .join
+      .tap { |sound| return num.to_s if sound.empty? }
   end
 end
