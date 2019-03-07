@@ -8,8 +8,14 @@ module Raindrops
   def self.drops(num : Int32) : String
     FACTORS_TO_RAINDROPS
       .select { |factor, _| num.divisible_by?(factor) }
-      .map { |_, sound| sound }
+      .values
       .join
-      .tap { |sound| return num.to_s if sound.empty? }
+      .default_if_blank?(num.to_s)
+  end
+end
+
+class String
+  def default_if_blank?(default : String) : String
+    self.blank? ? default : self
   end
 end
