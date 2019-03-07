@@ -1,1 +1,0 @@
-let leap_year year = (year mod 4) == 0
