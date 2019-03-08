@@ -9,7 +9,7 @@ module Year
   ]
 
   def leap?(year) : Bool
-    RULES.map { |rule| rule.call(year) }.all?(&.itself)
+    RULES.map(&.call(year)).all?(&.itself)
   end
 
   def p_divisible_by?(num : Int32) : Proc(Int32, Bool)
