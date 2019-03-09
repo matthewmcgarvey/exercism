@@ -1,14 +1,21 @@
 (ns armstrong-numbers)
 
-(defn armify [num count]
-  (-> num
-    (Character/digit 10)
-    (Math/pow count)
-    bigint)
-)
+(defn raise [num count] (reduce * (repeat count num)))
+
+(defn split [num]
+  (map #(Character/digit % 10) (str num)))
+ 
+(defn raise_all [nums pow]
+  (map #(raise % pow) nums))
+
+(defn sum [nums]
+  (reduce + nums))
+
+(defn convert [num]
+  (let [nums (split num)
+        length (count nums)
+        raised (raise_all nums length)]
+    (sum raised)))
 
 (defn armstrong? [num]
-  (let [str_num (str num)
-        length (count str_num)]
-    (<= num (reduce + (map #(armify % length) str_num))))
-)
+    (= num (convert num)))
