@@ -8,9 +8,9 @@ class Series
     return 1 if length.zero?
     @digits
       .chars
+      .map(&.to_i64)
       .each_cons(length)
-      .map(&.map(&.to_i64))
-      .map(&.reduce { |acc, i| acc * i })
+      .map(&.product)
       .max
   end
 end
