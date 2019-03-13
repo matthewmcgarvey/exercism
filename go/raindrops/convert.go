@@ -4,26 +4,23 @@ import (
 	"strconv"
 )
 
-type factorToSound struct {
-	factor int
-	sound  string
-}
-
-var factorsToSounds = [3]factorToSound{
-	factorToSound{3, "Pling"},
-	factorToSound{5, "Plang"},
-	factorToSound{7, "Plong"}}
-
 // Convert turns numbers into raindrops
 func Convert(num int) string {
-	sound := ""
-	for _, fts := range factorsToSounds {
-		if num%fts.factor == 0 {
-			sound += fts.sound
-		}
+	return defaultIfBlank(
+		ifZero(num%3, "Pling")+ifZero(num%5, "Plang")+ifZero(num%7, "Plong"),
+		strconv.Itoa(num))
+}
+
+func ifZero(mod int, result string) string {
+	if mod == 0 {
+		return result
 	}
-	if sound != "" {
-		return sound
+	return ""
+}
+
+func defaultIfBlank(strToTest string, defaultStr string) string {
+	if strToTest == "" {
+		return defaultStr
 	}
-	return strconv.Itoa(num)
+	return strToTest
 }
