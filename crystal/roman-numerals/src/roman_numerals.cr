@@ -16,14 +16,11 @@ struct Int
   }
 
   def to_roman : String
-    piece = CONVERSIONS.keys
-      .select(&.<=(self))
-      .max
-    next_num = self - piece
-    if next_num > 0
-      CONVERSIONS[piece] + next_num.to_roman
-    else
-      CONVERSIONS[piece]
-    end
+    return "" if self <= 0
+
+    num, roman = CONVERSIONS
+      .select { |k, v| k <= self }
+      .max_by { |k, v| k }
+    roman + (self - num).to_roman
   end
 end
