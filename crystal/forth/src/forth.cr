@@ -14,28 +14,31 @@ module Forth
 
   def evaluate(input) : Array(Int32)
     definitions, program = prepare(input)
-    user_defined_ops = compile(definitions)
+    run(program, compile(definitions))
+  end
+
+  private def run(program, user_defined_ops)
     program.split(" ")
       .reduce([] of Int32) do |stack, token|
-        methodize(token, stack, user_defined_ops) || bar(stack, token)
+        methodize?(token, stack, user_defined_ops) || evaluate(stack, token)
       end
   end
 
-  private def bar(stack : Array(Int32), token : String) : Array(Int32)
-    numerize(token, stack) || methodize(token, stack, OPERATIONS) || raise Exception.new
+  private def evaluate(stack : Array(Int32), token : String) : Array(Int32)
+    numerize?(token, stack) || methodize?(token, stack, OPERATIONS) || raise Exception.new
   end
 
-  private def numerize(token, stack)
+  private def numerize?(token, stack)
     token.to_i?.try { |num| stack << num }
   end
 
-  private def methodize(token, stack, ops)
+  private def methodize?(token, stack, ops)
     ops[token]?.try(&.call(stack))
   end
 
   private def prepare(input)
-    temp = input.downcase.split(";")
-    {temp[0..-2], temp[-1]}
+    parts = input.downcase.split(";")
+    {parts[0..-2], parts[-1]}
   end
 
   private def compile(definitions : Array(String))
@@ -47,7 +50,7 @@ module Forth
 
   private def define_user_op(x) : Proc(Array(Int32), Array(Int32))
     ->(stack : Array(Int32)) do
-      x[1..-1].reduce(stack) { |acc, token| token; bar(acc, token) }
+      x[1..-1].reduce(stack) { |acc, token| evaluate(acc, token) }
     end
   end
 
