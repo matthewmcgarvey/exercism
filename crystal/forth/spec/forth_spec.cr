@@ -22,6 +22,10 @@ describe "Forth" do
     end
   end
 
+  it "only adds the last two numbers" do
+    Forth.evaluate("1 2 3 +").should eq([1, 5])
+  end
+
   it "can subtract two numbers" do
     Forth.evaluate("3 4 -").should eq([-1])
   end
@@ -38,6 +42,10 @@ describe "Forth" do
     end
   end
 
+  it "only subtracts the last two numbers" do
+    Forth.evaluate("1 8 6 -").should eq([1, 2])
+  end
+
   it "can multiply two numbers" do
     Forth.evaluate("2 4 *").should eq([8])
   end
@@ -52,6 +60,10 @@ describe "Forth" do
     expect_raises(Exception) do
       Forth.evaluate("1 *")
     end
+  end
+
+  it "only multiplies the last two numbers" do
+    Forth.evaluate("1 3 3 *").should eq([1, 9])
   end
 
   it "can divide two numbers" do
@@ -78,6 +90,10 @@ describe "Forth" do
     expect_raises(Exception) do
       Forth.evaluate("1 /")
     end
+  end
+
+  it "only divides the last two numbers" do
+    Forth.evaluate("1 3 3 /").should eq([1, 1])
   end
 
   it "addition and subtraction" do
